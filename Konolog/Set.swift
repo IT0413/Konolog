@@ -1,41 +1,41 @@
-//
-//  Set.swift
-//  AVCapturePhotoOutput_test
-//
-//  Created by 伊藤孝史 on 2017/03/05.
-//  Copyright © 2017年 井上雄貴. All rights reserved.
-//
 
 import UIKit
 
 class Set: UIViewController {
 
+    @IBOutlet weak var nameField: UITextField!
+    @IBOutlet weak var sizeField: UITextField!
     // テキストビューをOutlet接続する
-    @IBOutlet weak var textView1: UITextView!
-    @IBOutlet weak var textView2: UITextView!
     
     // テキストファイルのパス
-    let theNamePath = NSHomeDirectory()+"/Documents/name.txt"
+    let namePath = NSHomeDirectory()+"/Documents/name.txt"
+    let sizePath = NSHomeDirectory()+"/Documents/size.txt"
+    let birthPath = NSHomeDirectory()+"/Documents/birth.txt"
+ 
     
-    // ファイルへの保存
-    @IBAction func saveToFile(sender: AnyObject) {
+    @IBAction func saveStatus(_ sender: Any) {
         // キーボードを下げる
         view.endEditing(true)
         // 保存するテキストデータ
-        let textData = textView1.text
+        let nameData = nameField.text
+        let sizeData = sizeField.text
         // テキストデータの保存をトライする
         do {
-            try textData.writeToFile(theNamePath, atomically: true, encoding: NSUTF8StringEncoding)
+            try nameData?.write(toFile: namePath, atomically: true, encoding: String.Encoding.utf8)
+        } catch let error as NSError {
+            print("保存に失敗。\n \(error)")
+        }
+        do {
+            try sizeData?.write(toFile: sizePath, atomically: true, encoding: String.Encoding.utf8)
         } catch let error as NSError {
             print("保存に失敗。\n \(error)")
         }
     }
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(Set.DismissKeyboard))
+        view.addGestureRecognizer(tap)
         // Do any additional setup after loading the view.
     }
 
@@ -44,6 +44,7 @@ class Set: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-
+    func DismissKeyboard(){
+        view.endEditing(true)
+    }
 }

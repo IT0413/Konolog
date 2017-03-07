@@ -5,7 +5,7 @@ import UIKit
 
 class Measure: UIViewController {
     @IBAction func measureNextBySegue(_ sender:UIButton) {
-        performSegue(withIdentifier: "registSegue", sender: nil)
+        performSegue(withIdentifier: "registerSegue", sender: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()

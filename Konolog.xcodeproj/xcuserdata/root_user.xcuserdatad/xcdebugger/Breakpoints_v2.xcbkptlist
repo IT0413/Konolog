@@ -33,53 +33,6 @@
             endingLineNumber = "21"
             landmarkName = "Graph"
             landmarkType = "3">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AVCapturePhotoOutput_test.Graph.namePath.getter : Swift.String"
-                  moduleName = "AVCapturePhotoOutput_test"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/root_user/Downloads/AVCapturePhotoOutput_test-master/AVCapturePhotoOutput_test/Graph.swift"
-                  timestampString = "510419062.409477"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "21"
-                  endingLineNumber = "21"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AVCapturePhotoOutput_test.Graph.init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; AVCapturePhotoOutput_test.Graph"
-                  moduleName = "AVCapturePhotoOutput_test"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/root_user/Downloads/AVCapturePhotoOutput_test-master/AVCapturePhotoOutput_test/Graph.swift"
-                  timestampString = "510419062.412133"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "21"
-                  endingLineNumber = "21"
-                  offsetFromSymbolStart = "196">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AVCapturePhotoOutput_test.Graph.init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;AVCapturePhotoOutput_test.Graph&gt;"
-                  moduleName = "AVCapturePhotoOutput_test"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/root_user/Downloads/AVCapturePhotoOutput_test-master/AVCapturePhotoOutput_test/Graph.swift"
-                  timestampString = "510419062.415998"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "21"
-                  endingLineNumber = "21"
-                  offsetFromSymbolStart = "136">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
