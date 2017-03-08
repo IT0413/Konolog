@@ -52,11 +52,10 @@ class Camera: UIViewController ,AVCapturePhotoCaptureDelegate{
             print(error)
         }
         
-        
         //画面サイズを取得する
         let myAppFrameSize: CGSize = UIScreen.main.bounds.size
         // 四角形のイメージを作る
-        let boxImage = makeRactangleImage(width: myAppFrameSize.width * 0.8, height: myAppFrameSize.height * 0.7)
+        let boxImage = makeRactangleImage(width: myAppFrameSize.width * 0.9, height: myAppFrameSize.height * 0.9)
         // イメージビューに設定する
         let boxView = UIImageView(image: boxImage)
         // 画面に表示する
@@ -71,7 +70,6 @@ class Camera: UIViewController ,AVCapturePhotoCaptureDelegate{
             let image = UIImage(data: photoData!)
             //カメラロールに追加する
             UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
-            
             //measureVCへ移動する
             let storyboard: UIStoryboard = self.storyboard!
             let nextView = storyboard.instantiateViewController(withIdentifier: "measure") as! Measure
