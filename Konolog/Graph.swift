@@ -24,11 +24,13 @@ class Graph: UIViewController {
         self.present(homeView, animated: true, completion: nil)
     }
     
-    @IBAction func readFromFile(_ sender: Any) {
+
+    func readFromFile(file:String) {
         // ファイルマネージャを作る
-        let fileManager = FileManager.default
-        // ファイルが存在するかどうかチェックする
-        if fileManager.fileExists(atPath: namePath) {
+        let fileNameManager = FileManager.default
+        let fileBirthManager = FileManager.default
+// ファイルが存在するかどうかチェックする
+        if fileNameManager.fileExists(atPath: namePath) {
             // テキストデータの読み込みをトライする
             do {
                 let nameData = try String(contentsOfFile: namePath, encoding: String.Encoding.utf8)
@@ -40,10 +42,57 @@ class Graph: UIViewController {
         } else {
             nameField.text = "ファイルが存在しません。"
         }
+        if fileBirthManager.fileExists(atPath: birthPath) {
+            // テキストデータの読み込みをトライする
+            do {
+                var birthData:String = try String(contentsOfFile: birthPath, encoding: String.Encoding.utf8)
+                // 読み込みが成功したならば表示する
+                birthData = birthData.replacingOccurrences(of: "年", with: "-")
+                birthData = birthData.replacingOccurrences(of: "月", with: "-")
+                birthData = birthData.replacingOccurrences(of: "日", with: "")
+                birthField.text = postnatalCalculate(birth: birthData)
+            } catch let error as NSError {
+                birthField.text = "読み込みに失敗。\n \(error)"
+            }
+        } else {
+            birthField.text = "ファイルが存在しません。"
+        }
+    }
+
+    //生後何日めかを計算する関数
+    func postnatalCalculate(birth:String) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        // 上記の形式の日付文字列から日付データを取得します。
+        let today = dateFormatter.date(from: getToday())
+        let birthDate = dateFormatter.date(from: birth)
+        print(getIntervalDays(date: today, anotherDay:birthDate))
+        
+        return String(format: "%g", getIntervalDays(date: today, anotherDay:birthDate))
+    }
+    
+    //今日の日付を取得する関数
+    func getToday(format:String = "yyyy-MM-dd") -> String {
+        let now = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        return formatter.string(from: now as Date)
+    }
+    //２つの日付の差を求める関数
+    func getIntervalDays(date:Date?,anotherDay:Date? = nil) -> Double {
+        var retInterval:Double!
+        if anotherDay == nil {
+            retInterval = date?.timeIntervalSinceNow
+        } else {
+            retInterval = date?.timeIntervalSince(anotherDay!)
+        }
+        let ret = retInterval/86400
+        return floor(ret)  // n日
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        readFromFile(file: namePath)
         let graphview = graphing() //グラフを表示するクラス
         graphView.addSubview(graphview) //グラフをスクロールビューに配置
         graphview.drawLineGraph() //グラフ描画開始
@@ -54,7 +103,6 @@ class Graph: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
- 
 class graphing: UIView {
         
         var lineWidth:CGFloat = 3.0 //グラフ線の太さ
