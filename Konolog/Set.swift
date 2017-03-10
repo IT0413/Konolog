@@ -29,27 +29,11 @@ class Set: UIViewController, UITextFieldDelegate {
         // キーボードを下げる
         view.endEditing(true)
         // 保存するテキストデータ
-        let nameData = nameField.text
-        let sizeData = sizeField.text
-        let birthData = dateSelecter.text
-        
-        // テキストデータの保存をトライする
-        do {
-            try nameData?.write(toFile: namePath, atomically: true, encoding: String.Encoding.utf8)
-        } catch let error as NSError {
-            print("名前保存に失敗。\n \(error)")
-        }
-        do {
-            try sizeData?.write(toFile: sizePath, atomically: true, encoding: String.Encoding.utf8)
-        } catch let error as NSError {
-            print("サイズ保存に失敗。\n \(error)")
-        }
-        do{
-            try birthData?.write(toFile: birthPath, atomically: true, encoding: String.Encoding.utf8)
-        } catch let error as NSError {
-            print("誕生日保存に失敗。\n \(error)")
-        }
+        save(field: nameField.text!, path:namePath)
+        save(field: sizeField.text!, path:sizePath)
+        save(field: dateSelecter.text!, path:birthPath)
     }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,7 +79,16 @@ class Set: UIViewController, UITextFieldDelegate {
         dateSelecter.text = dateFormat.string(from: pickerDate)
         self.view.endEditing(true)
     }
-
+    
+    //ファイルに保存する(上書き)
+    func save (field:String,path:String){
+        let data = field
+        do {
+            try data.write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
+        } catch let error as NSError {
+            print("名前保存に失敗。\n \(error)")
+        }
+    }
     //読み込んだファイルを表示する
     func readTextFile(fileURL: URL) {
         do {

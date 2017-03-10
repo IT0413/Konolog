@@ -6,15 +6,18 @@ class Graph: UIViewController {
 
     //ログデータ用配列
     var dataList:[String] = []
+    let todaySize:String = ""
     
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var birthField: UITextField!
+    @IBOutlet weak var heightField: UITextField!
     @IBOutlet weak var graphView: UIScrollView!
     
     //ファイルパス
     let namePath = NSHomeDirectory()+"/Documents/name.txt"
     let sizePath = NSHomeDirectory()+"/Documents/size.txt"
     let birthPath = NSHomeDirectory()+"/Documents/birth.txt"
+    let heightPath:String = NSHomeDirectory()+"/Documents/height.txt"
 
     
     @IBAction func homeBack(_ sender: Any) {
@@ -28,6 +31,7 @@ class Graph: UIViewController {
     func readFromFile(file:String) {
         // ファイルマネージャを作る
         let fileNameManager = FileManager.default
+        let fileHeightManager = FileManager.default
         let fileBirthManager = FileManager.default
 // ファイルが存在するかどうかチェックする
         if fileNameManager.fileExists(atPath: namePath) {
@@ -41,6 +45,19 @@ class Graph: UIViewController {
             }
         } else {
             nameField.text = "ファイルが存在しません。"
+        }
+        // ファイルが存在するかどうかチェックする
+        if fileHeightManager.fileExists(atPath: heightPath) {
+            // テキストデータの読み込みをトライする
+            do {
+                let heigthData = try String(contentsOfFile: heightPath, encoding: String.Encoding.utf8)
+                // 読み込みが成功したならば表示する
+                heightField.text = heigthData
+            } catch let error as NSError {
+                heightField.text = "読み込みに失敗。\n \(error)"
+            }
+        } else {
+            heightField.text = "ファイルが存在しません。"
         }
         if fileBirthManager.fileExists(atPath: birthPath) {
             // テキストデータの読み込みをトライする
@@ -111,7 +128,7 @@ class graphing: UIView {
         var circleColor:UIColor = UIColor(red:1,  green:1,  blue:0, alpha:1) //円の色
         
         var memoriMargin: CGFloat = 70 //横目盛の感覚
-        var graphHeight: CGFloat = 300 //グラフの高さ
+        var graphHeight: CGFloat = 280//グラフの高さ
         var graphPoints: [String] = []
         var graphDatas: [CGFloat] = []
         var logDates:[String] = []
@@ -119,17 +136,16 @@ class graphing: UIView {
 
     func drawLineGraph()
         {
-            //ログファイルから読み込む
-            
-            graphPoints = ["2000/2/3", "2000/3/3", "2000/4/3", "2000/5/3", "2000/6/3", "2000/7/3", "2000/8/3"]
-            graphDatas = [100, 30, 10, -50, 90, 12, 40]
+            //ログファイルから読み込むように修正予定
+            graphPoints = ["3/6", "3/7", "3/8", "3/9", "3/10"]
+            graphDatas = [49,49, 50, 51,52]
             GraphFrame()
             MemoriGraphDraw()
         }
         
         //グラフを描画するviewの大きさ
         func GraphFrame(){
-            self.backgroundColor = UIColor(red:0.972,  green:0.973,  blue:0.972, alpha:1)
+            self.backgroundColor = UIColor(red:0.52,  green:0.53,  blue:0.52, alpha:1)
             self.frame = CGRectMake(10 , 0, checkWidth(), checkHeight())
         }
         
@@ -148,19 +164,19 @@ class graphing: UIView {
                 let rect = label.sizeThatFits(frame)
                 
                 //ラベルの位置
-                var lebelX = (count * memoriMargin)-rect.width/2
+                var labelX = (count * memoriMargin) - rect.width/2
                 
                 //最初のラベル
                 if Int(count) == 0{
-                    lebelX = (count * memoriMargin)
+                    labelX = (count * memoriMargin)
                 }
                 
                 //最後のラベル
                 if Int(count+1) == graphPoints.count{
-                    lebelX = (count * memoriMargin)-rect.width
+                    labelX = (count * memoriMargin) - rect.width
                 }
                 
-                label.frame = CGRectMake(lebelX , graphHeight, rect.width, rect.height)
+                label.frame = CGRectMake(labelX , graphHeight, rect.width, rect.height)
                 self.addSubview(label)
                 
                 count += 1
@@ -192,7 +208,7 @@ class graphing: UIView {
                     //次のポイントを計算
                     var nextY: CGFloat = 0
                     nextY = graphDatas[Int(count+1)]/yAxisMax * (graphHeight - circleWidth)
-                    nextY = graphHeight - nextY
+                    nextY = graphHeight - nextY+30
                     
                     if(graphDatas.min()!<0){
                         nextY = (graphDatas[Int(count+1)] - graphDatas.min()!)/yAxisMax * (graphHeight - circleWidth)
@@ -202,8 +218,8 @@ class graphing: UIView {
                     //最初の開始地点を指定
                     var circlePoint:CGPoint = CGPoint()
                     if Int(count) == 0 {
-                        linePath.move(to: CGPoint(x: count * memoriMargin + circleWidth, y: nowY))
-                        circlePoint = CGPoint(x: count * memoriMargin + circleWidth, y: nowY)
+                        linePath.move(to: CGPoint(x: count * memoriMargin + circleWidth, y: nowY+30))
+                        circlePoint = CGPoint(x: count * memoriMargin + circleWidth, y: nowY+30)
                         myCircle = UIBezierPath(arcCenter: circlePoint,radius: circleWidth,startAngle: 0.0,endAngle: CGFloat(M_PI*2),clockwise: false)
                         circleColor.setFill()
                         myCircle.fill()
@@ -212,7 +228,6 @@ class graphing: UIView {
                     
                     //描画ポイントを指定
                     linePath.addLine(to: CGPoint(x: (count+1) * memoriMargin, y: nextY))
-                    
                     //円をつくる
                     circlePoint = CGPoint(x: (count+1) * memoriMargin, y: nextY)
                     myCircle = UIBezierPath(arcCenter: circlePoint,
@@ -236,7 +251,7 @@ class graphing: UIView {
         
         // 保持しているDataの中で最大値と最低値の差を求める
         var yAxisMax: CGFloat {
-            return graphDatas.max()!-graphDatas.min()!
+            return graphDatas.max()!-graphDatas.min()! + 70
         }
         
         //グラフ横幅を算出

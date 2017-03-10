@@ -10,7 +10,6 @@ class Camera: UIViewController ,AVCapturePhotoCaptureDelegate{
     var captureSesssion: AVCaptureSession!
     //画面のアウトプット
     var stillImageOutput: AVCapturePhotoOutput!
-    
     //シャッターボタンを実行
     @IBAction func takePhoto(_ sender: Any){
         let settingsForMonitoring = AVCapturePhotoSettings()
@@ -76,6 +75,7 @@ class Camera: UIViewController ,AVCapturePhotoCaptureDelegate{
             self.present(nextView, animated: true, completion: nil)
         }
     }
+
     
     
     func makeRactangleImage(width w:CGFloat, height h:CGFloat) -> UIImage{
